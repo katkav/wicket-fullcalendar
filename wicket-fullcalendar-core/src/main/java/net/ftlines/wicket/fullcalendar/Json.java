@@ -18,16 +18,16 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.MappingJsonFactory;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.codehaus.jackson.map.module.SimpleModule;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.MappingJsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -38,20 +38,22 @@ class Json {
 	}
 
 	private static class MyJsonFactory extends MappingJsonFactory {
+
 		@Override
-		public JsonGenerator createJsonGenerator(Writer out) throws IOException {
-			return super.createJsonGenerator(out).useDefaultPrettyPrinter();
+		public JsonGenerator createGenerator(Writer w) throws IOException {
+			return super.createGenerator(w).useDefaultPrettyPrinter();
 		}
 
 		@Override
-		public JsonGenerator createJsonGenerator(File f, JsonEncoding enc) throws IOException {
-			return super.createJsonGenerator(f, enc).useDefaultPrettyPrinter();
+		public JsonGenerator createGenerator(File f, JsonEncoding enc) throws IOException {
+			return super.createGenerator(f, enc).useDefaultPrettyPrinter();
 		}
 
 		@Override
-		public JsonGenerator createJsonGenerator(OutputStream out, JsonEncoding enc) throws IOException {
-			return super.createJsonGenerator(out, enc).useDefaultPrettyPrinter();
+		public JsonGenerator createGenerator(OutputStream out, JsonEncoding enc) throws IOException {
+			return super.createGenerator(out, enc).useDefaultPrettyPrinter();
 		}
+
 	}
 
 	public static String toJson(Object object) {
@@ -60,7 +62,7 @@ class Json {
 		module.addSerializer(new DateTimeSerializer());
 		module.addSerializer(new LocalTimeSerializer());
 		mapper.registerModule(module);
-		mapper.getSerializationConfig().setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
 		String json = null;
 		try {
@@ -74,7 +76,7 @@ class Json {
 	public static class DateTimeSerializer extends JsonSerializer<DateTime> {
 		@Override
 		public void serialize(DateTime value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
-			JsonProcessingException {
+				JsonProcessingException {
 			jgen.writeString(ISODateTimeFormat.dateTime().print(value));
 		}
 
