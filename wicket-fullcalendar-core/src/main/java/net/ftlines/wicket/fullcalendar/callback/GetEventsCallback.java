@@ -25,7 +25,7 @@ public class GetEventsCallback extends AbstractCallback {
 	private static final String SOURCE_ID = "sid";
 
 	public String getUrl(EventSource source) {
-		return getUrl(new MicroMap<String, Object>(SOURCE_ID, source.getUuid()));
+		return getUrl(new MicroMap<String, Object>(SOURCE_ID, source.getId()));
 	}
 
 	@Override

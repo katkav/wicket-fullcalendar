@@ -15,7 +15,6 @@ package net.ftlines.wicket.fullcalendar;
 import org.apache.wicket.IRequestListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.apache.wicket.util.collections.MicroMap;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 
@@ -31,6 +30,8 @@ import net.ftlines.wicket.fullcalendar.callback.ResizedEvent;
 import net.ftlines.wicket.fullcalendar.callback.SelectedRange;
 import net.ftlines.wicket.fullcalendar.callback.View;
 import net.ftlines.wicket.fullcalendar.callback.ViewDisplayCallback;
+
+import java.util.UUID;
 
 public class FullCalendar extends AbstractFullCalendar implements IRequestListener {
 	private static final TextTemplate EVENTS = new PackageTextTemplate(FullCalendar.class, "FullCalendar.events.tpl");
@@ -66,12 +67,12 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-//		for (EventSource source : config.getEventSources()) {
-//			if (source.getUuid() == null) {
-//				String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
-//				source.setUuid(uuid);
-//			}
-//		}
+		for (EventSource source : configNew.getEventSources()) {
+			if (source.getId() == null) {
+				String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
+				source.setId(uuid);
+			}
+		}
 	}
 
 	@Override

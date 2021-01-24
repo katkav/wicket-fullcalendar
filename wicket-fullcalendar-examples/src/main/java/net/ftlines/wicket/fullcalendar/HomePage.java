@@ -28,7 +28,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.util.time.Duration;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 
 public class HomePage extends WebPage {
 
@@ -131,7 +130,7 @@ public class HomePage extends WebPage {
 			protected boolean onEventDropped(DroppedEvent event,
 					CalendarResponse response) {
 				info("Event drop. eventId: " + event.getEvent().getId()
-						+ " sourceId: " + event.getSource().getUuid()
+						+ " sourceId: " + event.getSource().getId()
 						+ " dayDelta: " + event.getDaysDelta()
 						+ " minuteDelta: " + event.getMinutesDelta()
 						+ " allDay: " + event.isAllDay());
@@ -149,7 +148,7 @@ public class HomePage extends WebPage {
 			protected boolean onEventResized(ResizedEvent event,
 					CalendarResponse response) {
 				info("Event resized. eventId: " + event.getEvent().getId()
-						+ " sourceId: " + event.getSource().getUuid()
+						+ " sourceId: " + event.getSource().getId()
 						+ " dayDelta: " + event.getDaysDelta()
 						+ " minuteDelta: " + event.getMinutesDelta());
 				response.getTarget().add(feedback);
@@ -161,7 +160,7 @@ public class HomePage extends WebPage {
 			protected void onEventClicked(ClickedEvent event,
 					CalendarResponse response) {
 				info("Event clicked. eventId: " + event.getEvent().getId()
-						+ ", sourceId: " + event.getSource().getUuid());
+						+ ", sourceId: " + event.getSource().getId());
 				response.refetchEvents();
 				response.getTarget().add(feedback);
 			}

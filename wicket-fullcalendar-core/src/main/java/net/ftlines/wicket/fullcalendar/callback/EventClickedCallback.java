@@ -38,7 +38,7 @@ public abstract class EventClickedCallback extends AbstractAjaxCallback implemen
 		String sourceId = r.getRequestParameters().getParameterValue("sourceId").toString();
 
 		EventSource source = getCalendar().getEventManager().getEventSource(sourceId);
-		Event event = source.getEventProvider().getEventForId(eventId);
+		Event event = source.getEventById(eventId);//getEventProvider().getEventForId(eventId);
 
 		onClicked(new ClickedEvent(source, event), new CalendarResponse(getCalendar(), target));
 	}

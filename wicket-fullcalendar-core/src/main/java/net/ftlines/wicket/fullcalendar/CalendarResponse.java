@@ -63,7 +63,7 @@ public class CalendarResponse {
 	}
 
 	public CalendarResponse toggleEventSource(EventSource source, boolean enabled) {
-		return execute(q("toggleSource"), q(source.getUuid()), String.valueOf(enabled));
+		return execute(q("toggleSource"), q(source.getId()), String.valueOf(enabled));
 	}
 
 	public CalendarResponse removeEvent(String id) {

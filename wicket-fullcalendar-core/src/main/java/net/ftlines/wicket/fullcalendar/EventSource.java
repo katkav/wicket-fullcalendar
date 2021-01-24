@@ -25,6 +25,7 @@ import net.ftlines.wicket.fullcalendar.selector.EventSourceSelector;
 
 public class EventSource implements Serializable {
 
+	private String id;
 	private String color;
 	private String backgroundColor;
 	private String borderColor;
@@ -151,16 +152,34 @@ public class EventSource implements Serializable {
 	}
 
 	@JsonIgnore
-	public String getUuid() {
-		return (String) extraParams.get(Const.UUID);
+	public Event getEventById(String id) {
+		for (Event event : events) {
+			if (event.getId().equals(id)) {
+				return event;
+			}
+		}
+		return null;
 	}
 
-	public EventSource setUuid(String uuid) {
-		extraParams.put(Const.UUID, uuid);
-		return this;
+//	@JsonIgnore
+//	public String getId() {
+//		return (String) extraParams.get(Const.UUID);
+//	}
+//
+//	public EventSource setId(String uuid) {
+//		extraParams.put(Const.UUID, uuid);
+//		return this;
+//	}
+
+	public String getId() {
+		return id;
 	}
 
-//	@JsonRawValue
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	//	@JsonRawValue
 //	public String getEvents() {
 //		return events;
 //	}
