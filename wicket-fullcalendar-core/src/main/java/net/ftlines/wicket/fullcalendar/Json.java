@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.github.openjson.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -57,8 +58,9 @@ class Json {
 	}
 
 	public static String toJson(Object object) {
+
 		ObjectMapper mapper = new ObjectMapper(new MyJsonFactory());
-		SimpleModule module = new SimpleModule("fullcalendar", new Version(1, 0, 0, null));
+		SimpleModule module = new SimpleModule("fullcalendar");
 		module.addSerializer(new DateTimeSerializer());
 		module.addSerializer(new LocalTimeSerializer());
 		mapper.registerModule(module);

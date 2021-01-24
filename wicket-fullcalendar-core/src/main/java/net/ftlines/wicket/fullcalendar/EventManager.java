@@ -23,11 +23,11 @@ public class EventManager {
 
 	public EventSource getEventSource(String id) throws EventSourceNotFoundException {
 
-		for (EventSource source : calendar.getConfig().getEventSources()) {
-			if (Objects.equal(id, source.getUuid())) {
-				return source;
-			}
-		}
+//		for (EventSource source : calendar.getConfig().getEventSources()) {
+//			if (Objects.equal(id, source.getUuid())) {
+//				return source;
+//			}
+//		}
 		throw new EventSourceNotFoundException("Event source with uuid: " + id + " not found");
 	}
 

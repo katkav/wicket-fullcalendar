@@ -12,8 +12,6 @@
 
 package net.ftlines.wicket.fullcalendar;
 
-import java.util.UUID;
-
 import org.apache.wicket.IRequestListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -37,17 +35,18 @@ import net.ftlines.wicket.fullcalendar.callback.ViewDisplayCallback;
 public class FullCalendar extends AbstractFullCalendar implements IRequestListener {
 	private static final TextTemplate EVENTS = new PackageTextTemplate(FullCalendar.class, "FullCalendar.events.tpl");
 
-	private final Config config;
+	private Config config = new Config();
+	private final ConfigNew configNew;
 	private EventDroppedCallback eventDropped;
 	private EventResizedCallback eventResized;
 	private GetEventsCallback getEvents;
 	private DateRangeSelectedCallback dateRangeSelected;
-	private EventClickedCallback eventClicked;
+	private EventClickedCallback dateClicked;
 	private ViewDisplayCallback viewDisplay;
 
-	public FullCalendar(String id, Config config) {
+	public FullCalendar(String id, ConfigNew config) {
 		super(id);
-		this.config = config;
+		this.configNew = config;
 		setVersioned(false);
 	}
 
@@ -56,8 +55,8 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 		return false;
 	}
 
-	public Config getConfig() {
-		return config;
+	public ConfigNew getConfig() {
+		return configNew;
 	}
 
 	public EventManager getEventManager() {
@@ -67,12 +66,12 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		for (EventSource source : config.getEventSources()) {
-			if (source.getUuid() == null) {
-				String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
-				source.setUuid(uuid);
-			}
-		}
+//		for (EventSource source : config.getEventSources()) {
+//			if (source.getUuid() == null) {
+//				String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
+//				source.setUuid(uuid);
+//			}
+//		}
 	}
 
 	@Override
@@ -93,20 +92,34 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 		if (getEvents == null) {
 			add(getEvents = new GetEventsCallback());
 		}
-		for (EventSource source : config.getEventSources()) {
-			source.setEvents(EVENTS.asString(new MicroMap<String, String>("url", getEvents.getUrl(source))));
-		}
+//		for (EventSource source : config.getEventSources()) {
+//			source.setEvents(EVENTS.asString(new MicroMap<String, String>("url", getEvents.getUrl(source))));
+//		}
 
-		if (eventClicked == null) {
-			add(eventClicked = new EventClickedCallback() {
+//		for (EventSource source : configNew.getEventSources()) {
+//			source.setEvents(EVENTS.asString(new MicroMap<String, String>("url", getEvents.getUrl(source))));
+//		}
+
+		if (dateClicked == null) {
+			add(dateClicked = new EventClickedCallback() {
 				@Override
 				protected void onClicked(ClickedEvent event, CalendarResponse response) {
 					onEventClicked(event, response);
 				}
 			});
 		}
-		config.setEventClick(eventClicked.getHandlerScript());
+		configNew.setEventClick(dateClicked.getHandlerScript());
+		config.setEventClick(dateClicked.getHandlerScript());
 
+		if (dateClicked == null) {
+			add(dateClicked = new EventClickedCallback() {
+				@Override
+				protected void onClicked(ClickedEvent event, CalendarResponse response) {
+					onEventClicked(event, response);
+				}
+			});
+		}
+//		configNew.setDateClick(dateClicked.getHandlerScript());
 		if (dateRangeSelected == null) {
 			add(dateRangeSelected = new DateRangeSelectedCallback(config.isIgnoreTimezone()) {
 				@Override
@@ -117,6 +130,7 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 
 		}
 		config.setSelect(dateRangeSelected.getHandlerScript());
+		configNew.setSelect(dateRangeSelected.getHandlerScript());
 
 		if (eventDropped == null) {
 			add(eventDropped = new EventDroppedCallback() {
@@ -159,7 +173,7 @@ public class FullCalendar extends AbstractFullCalendar implements IRequestListen
 		super.renderHead(response);
 
 		String configuration = "$(\"#" + getMarkupId() + "\").fullCalendarExt(";
-		configuration += Json.toJson(config);
+		configuration += Json.toJson(configNew);
 		configuration += ");";
 
 		response.render(OnDomReadyHeaderItem.forScript(configuration));

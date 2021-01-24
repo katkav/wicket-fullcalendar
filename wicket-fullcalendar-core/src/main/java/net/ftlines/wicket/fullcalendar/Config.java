@@ -32,7 +32,7 @@ public class Config implements Serializable {
 	}
 
 	private List<EventSource> eventSources = new ArrayList<EventSource>();
-	private Header header = new Header();
+//	private Header headerToolbar = new Header();
 	private ButtonText buttonText = new ButtonText();
 	private String loading;
 	private Boolean editable;
@@ -45,7 +45,7 @@ public class Config implements Serializable {
 	private Boolean selectHelper;
 	/** A callback that will fire after a selection is made */
 	private String select;
-	private String defaultView;
+	private String initialView;
 	@JsonProperty
 	private Map<ColumnFormat, String> columnFormat = new HashMap<Config.ColumnFormat, String>();
 
@@ -81,9 +81,9 @@ public class Config implements Serializable {
 		return Collections.unmodifiableList(eventSources);
 	}
 
-	public Header getHeader() {
-		return header;
-	}
+//	public Header getHeaderToolbar() {
+//		return headerToolbar;
+//	}
 
 	@JsonRawValue
 	public String getEventResize() {
@@ -185,19 +185,19 @@ public class Config implements Serializable {
 	/**
 	 * @return the defaultView
 	 */
-	public String getDefaultView() {
-		return defaultView;
+	public String getInitialView() {
+		return initialView;
 	}
 
 	/**
 	 * See <a href="http://arshaw.com/fullcalendar/docs/views/Available_Views/">http ://arshaw.com/
 	 * fullcalendar/docs/views/Available_Views/</a> for the list of possible values.
 	 * 
-	 * @param defaultView
+	 * @param initialView
 	 *            the defaultView to set
 	 */
-	public void setDefaultView(String defaultView) {
-		this.defaultView = defaultView;
+	public void setInitialView(String initialView) {
+		this.initialView = initialView;
 	}
 
 	@JsonIgnore

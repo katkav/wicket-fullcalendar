@@ -22,13 +22,13 @@ import org.apache.wicket.request.Request;
 public abstract class EventClickedCallback extends AbstractAjaxCallback implements CallbackWithHandler {
 	@Override
 	protected String configureCallbackScript(String script, String urlTail) {
-		return script.replace(urlTail, "&eventId=\"+event.id+\"&sourceId=\"+event.source.data."
-			+ EventSource.Const.UUID + "+\"");
+		return script.replace(urlTail, "&eventId=\"+info.event.id+\"&sourceId=\"+info.event.source.id"
+			+ "+\"");
 	}
 
 	@Override
 	public String getHandlerScript() {
-		return "function(event) { " + getCallbackScript() + "}";
+		return "function(info) { " + getCallbackScript() + "}";
 	}
 
 	@Override

@@ -29,11 +29,11 @@ public class EventSourceSelector extends WebComponent implements IHeaderContribu
 		setOutputMarkupId(true);
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-
-		response.render(OnLoadHeaderItem.forScript("$('#" + calendar.getMarkupId()
-			+ "').fullCalendarExt('createEventSourceSelector', '" + getMarkupId() + "');"));
-	}
+//	@Override
+//	public void renderHead(IHeaderResponse response) {
+//
+//		response.render(OnLoadHeaderItem.forScript("$('#" + calendar.getMarkupId()
+//			+ "').fullCalendarExt('createEventSourceSelector', '" + getMarkupId() + "');"));
+//	}
 
 }

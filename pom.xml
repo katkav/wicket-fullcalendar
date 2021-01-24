@@ -197,6 +197,12 @@
 						<exclude>**/fullcalendar.js</exclude>
 						<exclude>**/fullcalendar.min.js</exclude>
 						<exclude>**/fullcalendar.print.css</exclude>
+						<exclude>**/main.css</exclude>
+						<exclude>**/main.min.css</exclude>
+						<exclude>**/main.js</exclude>
+						<exclude>**/main.min.js</exclude>
+						<exclude>**/locales-all.js</exclude>
+						<exclude>**/locales/**</exclude>
 						<exclude>**/src/main/webapp/**</exclude>
 						<exclude>eclipse-formatter.xml</exclude>
 						<exclude>build-number.txt</exclude>

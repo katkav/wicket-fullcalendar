@@ -29,13 +29,13 @@ abstract class AbstractFullCalendar extends MarkupContainer implements IHeaderCo
 
 	// TODO see if it makes sense to switch these to Css/JavaScriptResourceReference
 	protected static final ResourceReference CSS = new PackageResourceReference(AbstractFullCalendar.class,
-		"res/fullcalendar.css");
+		"res/main.css");
 	protected static final ResourceReference JS = new PackageResourceReference(AbstractFullCalendar.class,
-		"res/fullcalendar.js");
+		"res/main.js");
 	protected static final ResourceReference JS_EXT = new PackageResourceReference(AbstractFullCalendar.class,
 		"res/fullcalendar.ext.js");
 	protected static final ResourceReference JS_MIN = new PackageResourceReference(AbstractFullCalendar.class,
-		"res/fullcalendar.min.js");
+		"res/main.min.js");
 
 	@Override
 	public void renderHead(IHeaderResponse response) {

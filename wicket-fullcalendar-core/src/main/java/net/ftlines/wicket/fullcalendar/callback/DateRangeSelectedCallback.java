@@ -16,6 +16,7 @@ import net.ftlines.wicket.fullcalendar.CalendarResponse;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.request.Request;
+import org.apache.wicket.util.string.StringValue;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -39,12 +40,12 @@ public abstract class DateRangeSelectedCallback extends AbstractAjaxCallback imp
 		return script
 			.replace(
 				urlTail,
-				"&timezoneOffset=\"+startDate.getTimezoneOffset()+\"&startDate=\"+startDate.getTime()+\"&endDate=\"+endDate.getTime()+\"&allDay=\"+allDay+\"");
+				"&startDate=\"+info.start[Symbol.toPrimitive]('number')+\"&endDate=\"+info.end[Symbol.toPrimitive]('number')+\"&allDay=\"+info.allDay+\"");  //&timezoneOffset="+info.start.getTimezoneOffset()+"
 	}
 
 	@Override
 	public String getHandlerScript() {
-		return "function(startDate, endDate, allDay) { " + getCallbackScript() + "}";
+		return "function(info) { " + getCallbackScript() + "}";
 	}
 
 	@Override
@@ -54,17 +55,28 @@ public abstract class DateRangeSelectedCallback extends AbstractAjaxCallback imp
 		DateTime start = new DateTime(r.getRequestParameters().getParameterValue("startDate").toLong());
 		DateTime end = new DateTime(r.getRequestParameters().getParameterValue("endDate").toLong());
 
-		if (ignoreTimezone) {
-			// Convert to same DateTime in local time zone.
-			int remoteOffset = -r.getRequestParameters().getParameterValue("timezoneOffset").toInt();
-			int localOffset = DateTimeZone.getDefault().getOffset(null) / 60000;
-			int minutesAdjustment = remoteOffset - localOffset;
-			start = start.plusMinutes(minutesAdjustment);
-			end = end.plusMinutes(minutesAdjustment);
-		}
+//		DateTime start = new DateTime(parseDateTime(r, "startDate"));
+//		DateTime end = new DateTime(parseDateTime(r, "endDate"));
+
+//		if (ignoreTimezone) {
+//			// Convert to same DateTime in local time zone.
+//			int remoteOffset = -r.getRequestParameters().getParameterValue("timezoneOffset").toInt();
+//			int localOffset = DateTimeZone.getDefault().getOffset(null) / 60000;
+//			int minutesAdjustment = remoteOffset - localOffset;
+//			start = start.plusMinutes(minutesAdjustment);
+//			end = end.plusMinutes(minutesAdjustment);
+//		}
 		boolean allDay = r.getRequestParameters().getParameterValue("allDay").toBoolean();
 		onSelect(new SelectedRange(start, end, allDay), new CalendarResponse(getCalendar(), target));
 
+	}
+
+	private DateTime parseDateTime(Request r, String param) {
+		StringValue value = r.getRequestParameters().getParameterValue(param);
+		if (value == null) {
+			return null;
+		}
+		return DateTime.parse(value.toString());
 	}
 
 	protected abstract void onSelect(SelectedRange range, CalendarResponse response);

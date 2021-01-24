@@ -13,7 +13,9 @@
 package net.ftlines.wicket.fullcalendar;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,12 +31,16 @@ public class EventSource implements Serializable {
 	private String textColor;
 	private String className;
 	private Boolean editable;
-	private Boolean allDayDefault;
-	private Boolean ignoreTimezone;
-	private String error;
-	private Map<String, Object> data = new HashMap<String, Object>();
-	private String events;
 
+	private Boolean defaultAllDay;
+
+//	private Boolean ignoreTimezone;
+//	private String error;
+	private Map<String, Object> extraParams = new HashMap<String, Object>();
+//	private String events;
+
+	private List<Event> events;
+	//JSON ignore
 	private EventProvider eventProvider;
 	private Boolean enableInSelector = true;
 	private Boolean includeInSelector = true;
@@ -94,31 +100,31 @@ public class EventSource implements Serializable {
 	}
 
 	public Boolean isAllDayDefault() {
-		return allDayDefault;
+		return defaultAllDay;
 	}
 
-	public EventSource setAllDayDefault(Boolean allDayDefault) {
-		this.allDayDefault = allDayDefault;
+	public EventSource setDefaultAllDay(Boolean defaultAllDay) {
+		this.defaultAllDay = defaultAllDay;
 		return this;
 	}
 
-	public Boolean isIgnoreTimezone() {
-		return ignoreTimezone;
-	}
-
-	public EventSource setIgnoreTimezone(Boolean ignoreTimezone) {
-		this.ignoreTimezone = ignoreTimezone;
-		return this;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public EventSource setError(String error) {
-		this.error = error;
-		return this;
-	}
+//	public Boolean isIgnoreTimezone() {
+//		return ignoreTimezone;
+//	}
+//
+//	public EventSource setIgnoreTimezone(Boolean ignoreTimezone) {
+//		this.ignoreTimezone = ignoreTimezone;
+//		return this;
+//	}
+//
+//	public String getError() {
+//		return error;
+//	}
+//
+//	public EventSource setError(String error) {
+//		this.error = error;
+//		return this;
+//	}
 
 	@JsonIgnore
 	public EventProvider getEventProvider() {
@@ -130,37 +136,49 @@ public class EventSource implements Serializable {
 		return this;
 	}
 
-	public Map<String, Object> getData() {
-		return data;
+	public Map<String, Object> getExtraParams() {
+		return extraParams;
 	}
 
 	public EventSource setTitle(String title) {
-		data.put(Const.TITLE, title);
+		extraParams.put(Const.TITLE, title);
 		return this;
 	}
 
 	@JsonIgnore
 	public String getTitle() {
-		return (String) data.get(Const.TITLE);
+		return (String) extraParams.get(Const.TITLE);
 	}
 
 	@JsonIgnore
 	public String getUuid() {
-		return (String) data.get(Const.UUID);
+		return (String) extraParams.get(Const.UUID);
 	}
 
 	public EventSource setUuid(String uuid) {
-		data.put(Const.UUID, uuid);
+		extraParams.put(Const.UUID, uuid);
 		return this;
 	}
 
-	@JsonRawValue
-	public String getEvents() {
+//	@JsonRawValue
+//	public String getEvents() {
+//		return events;
+//	}
+//
+//	void setEvents(String events) {
+//		this.events = events;
+//	}
+
+
+	public List<Event> getEvents() {
 		return events;
 	}
 
-	void setEvents(String events) {
-		this.events = events;
+	public void addEvent(Event event) {
+		if (events == null) {
+			events = new ArrayList<>();
+		}
+		events.add(event);
 	}
 
 	public static class Const {

@@ -32,13 +32,15 @@ $.fn.generateId = function() {
 
 	/** forwards function invocation to fullCalendar plugin */
 	function forward(element, args) {
-		return $.fn.fullCalendar.apply($(element), args);
+		var calendar = new FullCalendar.Calendar(element, args);
+		calendar.render();
+		// return $.fn.fullCalendar.apply($(element), args);
 	}
 
 	function copyArray(original) {
-		var copy=[];
-		for (var i=0,len=original.length;i<len;i++)
-			copy.push(original[i]);
+		var copy = original[0]; // take the first argument, it is expected that the argument is JSON object holding calendar settings
+		// for (var i=0,len=original.length;i<len;i++)
+		// 	copy.push(original[i]);
 		return copy;
 	}
 	
@@ -81,27 +83,27 @@ $.fn.generateId = function() {
 				sources=copyArray(sources);
 				
 				$(sources).each(function() {
-					if (typeof(this.data.fcxEnabled)==="undefined") {
-						this.data.fcxEnabled=true;
+					if (typeof(this.extraParams.fcxEnabled)==="undefined") {
+						this.extraParams.fcxEnabled=true;
 					}
 				});
 				
 				
 				function findSource(uuid) {
 					for (var i=0,len=sources.length;i<len;i++) {
-						if (sources[i].data.fcxUuid===uuid) return sources[i];
+						if (sources[i].extraParams.fcxUuid===uuid) return sources[i];
 					}
 				}
 				
 				function _toggleSource(owner, uuid, val) {
 					var source=findSource(uuid);
-					val = (typeof(val) === "undefined") ? (!source.data.fcxEnabled) : val;
-					if (val&&!source.data.fcxEnabled) {
+					val = (typeof(val) === "undefined") ? (!source.extraParams.fcxEnabled) : val;
+					if (val&&!source.extraParams.fcxEnabled) {
 						$(owner).fullCalendar('addEventSource', source);
-						source.data.fcxEnabled=true;
-					} else if (!val&&source.data.fcxEnabled) {
+						source.extraParams.fcxEnabled=true;
+					} else if (!val&&source.extraParams.fcxEnabled) {
 						$(owner).fullCalendar('removeEventSource', source);
-						source.data.fcxEnabled=false;
+						source.extraParams.fcxEnabled=false;
 					}
 				}
 				
@@ -113,9 +115,9 @@ $.fn.generateId = function() {
 					$(sources).each(function() {
 						if (this.includeInSelector)
 						{
-							var sourceUuid=this.data.fcxUuid||null;
+							var sourceUuid=this.extraParams.fcxUuid||null;
 							var checkbox=$("<input type='checkbox'/>");
-							if (this.data.fcxEnabled) { checkbox.attr("checked","checked"); }
+							if (this.extraParams.fcxEnabled) { checkbox.attr("checked","checked"); }
 							if (!this.enableInSelector) { checkbox.attr("disabled", "true"); }
 							checkbox.bind("click", function() { _toggleSource(owner, sourceUuid, this.checked); });
 							checkbox.generateId();
@@ -123,7 +125,7 @@ $.fn.generateId = function() {
 							// Add the class used by the event source to the <li> so it can be styled.
 							if (this.className && $.trim(this.className) != "") { li.attr("class",this.className); }
 							checkbox.appendTo(li);
-							$("<label for='"+checkbox.attr("id")+"'>"+this.data.fcxTitle+"</label>").appendTo(li);
+							$("<label for='"+checkbox.attr("id")+"'>"+this.extraParams.fcxTitle+"</label>").appendTo(li);
 							li.appendTo(ul);					
 						}
 					});

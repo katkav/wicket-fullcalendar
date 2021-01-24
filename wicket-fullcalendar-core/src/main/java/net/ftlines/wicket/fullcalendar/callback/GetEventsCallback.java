@@ -36,14 +36,14 @@ public class GetEventsCallback extends AbstractCallback {
 		DateTime start = new DateTime(r.getRequestParameters().getParameterValue("start").toLong());
 		DateTime end = new DateTime(r.getRequestParameters().getParameterValue("end").toLong());
 
-		if (getCalendar().getConfig().isIgnoreTimezone()) {
-			// Convert to same DateTime in local time zone.
-			int remoteOffset = -r.getRequestParameters().getParameterValue("timezoneOffset").toInt();
-			int localOffset = DateTimeZone.getDefault().getOffset(null) / 60000;
-			int minutesAdjustment = remoteOffset - localOffset;
-			start = start.plusMinutes(minutesAdjustment);
-			end = end.plusMinutes(minutesAdjustment);
-		}
+//		if (getCalendar().getConfig().isIgnoreTimezone()) {
+//			// Convert to same DateTime in local time zone.
+//			int remoteOffset = -r.getRequestParameters().getParameterValue("timezoneOffset").toInt();
+//			int localOffset = DateTimeZone.getDefault().getOffset(null) / 60000;
+//			int minutesAdjustment = remoteOffset - localOffset;
+//			start = start.plusMinutes(minutesAdjustment);
+//			end = end.plusMinutes(minutesAdjustment);
+//		}
 		EventSource source = getCalendar().getEventManager().getEventSource(sid);
 		EventProvider provider = source.getEventProvider();
 		String response = getCalendar().toJson(provider.getEvents(start, end));
